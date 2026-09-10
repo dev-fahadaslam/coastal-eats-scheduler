@@ -34,7 +34,13 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
   });
   if (res.status === 204) return undefined as T;
   const isJson = (res.headers.get('content-type') ?? '').includes('application/json');
-  const data: unknown = isJson ? await res.json() : await res.text();
+  if (!isJson) {
+    throw new ApiError(
+      `Expected a JSON response from ${method} ${path} but got "${res.headers.get('content-type') ?? 'unknown'}". Check that VITE_API_URL points at the deployed API, not the frontend itself.`,
+      res.status,
+    );
+  }
+  const data: unknown = await res.json();
   if (!res.ok) {
     const parsed = data as { error?: string; issues?: string[]; warnings?: string[] };
     throw new ApiError(parsed?.error ?? `Request failed (${res.status})`, res.status, parsed?.issues, parsed?.warnings);
