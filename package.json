@@ -1,0 +1,17 @@
+{
+  "name": "shiftsync",
+  "version": "2.0.0",
+  "private": true,
+  "description": "ShiftSync — MERN shift-scheduling platform for Coastal Eats",
+  "workspaces": ["server", "client"],
+  "scripts": {
+    "dev": "concurrently -k -n SERVER,CLIENT -c blue,magenta \"npm:dev --workspace=server\" \"npm:dev --workspace=client\"",
+    "seed": "npm run seed --workspace=server",
+    "test": "npm test --workspace=server",
+    "build": "npm run build --workspace=client"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  },
+  "engines": { "node": ">=20" }
+}
