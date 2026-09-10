@@ -15,7 +15,8 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       return;
     }
     const token = getToken();
-    const instance = io({ auth: { token } });
+    const socketUrl = import.meta.env.VITE_API_URL || undefined;
+    const instance = io(socketUrl, { auth: { token } });
     setSocket(instance);
     return () => {
       instance.disconnect();

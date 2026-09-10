@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
-import { api } from '../api/client.js';
-import { getToken } from '../api/client.js';
+import { api, apiUrl, getToken } from '../api/client.js';
 import { useAuth } from '../context/AuthContext.js';
 import { useApiData } from '../hooks/useApiData.js';
 import { useRealtimeRefetch } from '../hooks/useRealtimeRefetch.js';
@@ -27,7 +26,7 @@ export default function AuditPage() {
   const locationsById = useMemo(() => new Map((locations ?? []).map(l => [l.id, l])), [locations]);
 
   async function exportCsv() {
-    const res = await fetch(`/api/audit/export.csv${query ? `?${query}` : ''}`, {
+    const res = await fetch(apiUrl(`/audit/export.csv${query ? `?${query}` : ''}`), {
       headers: { Authorization: `Bearer ${getToken() ?? ''}` },
     });
     if (!res.ok) return;

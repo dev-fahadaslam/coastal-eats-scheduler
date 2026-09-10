@@ -1,4 +1,4 @@
-const API_BASE = '/api';
+const API_BASE = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : '/api';
 const TOKEN_KEY = 'shiftsync:token';
 
 export function getToken(): string | null {
@@ -52,4 +52,8 @@ export const api = {
 
 export function joinLocationIds(ids?: string[]): string {
   return ids && ids.length ? `?locationIds=${ids.join(',')}` : '';
+}
+
+export function apiUrl(path: string): string {
+  return `${API_BASE}${path}`;
 }
